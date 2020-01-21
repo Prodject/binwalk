@@ -64,6 +64,11 @@ class CPIOPlugin(binwalk.core.plugin.Plugin):
         # Be sure to re-set this at the beginning of every scan
         self.found_archive = False
         self.found_archive_in_file = None
+        self.consecutive_hits = 0
+
+    def new_file(self, f):
+        # Make sure internal settings don't persist across different files
+        self.pre_scan()
 
     def _get_file_name(self, description):
         name = ''
@@ -116,10 +121,10 @@ class CPIOPlugin(binwalk.core.plugin.Plugin):
                 result.jump = self.CPIO_HEADER_SIZE + file_size + file_name_length
                 self.consecutive_hits += 1
 
-                if not self.found_archive or self.found_archive_in_file != result.file.name:
+                if not self.found_archive or self.found_archive_in_file != result.file.path:
                     # This is the first entry. Set found_archive and allow the
                     # scan to continue normally.
-                    self.found_archive_in_file = result.file.name
+                    self.found_archive_in_file = result.file.path
                     self.found_archive = True
                     result.extract = True
                 elif 'TRAILER!!!' in result.description:

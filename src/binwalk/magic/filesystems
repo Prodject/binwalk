@@ -511,6 +511,8 @@
 # volume label and UUID Russell Coker
 # http://etbe.coker.com.au/2008/07/08/label-vs-uuid-vs-device/
 0x438       uleshort        0xEF53          Linux EXT filesystem,
+>0x404      ulelong         x               blocks count: %d,
+>0x404      lelong*1024     x               image size: %d,{jump:%d}
 >0x43A      leshort         >4              {invalid}invalid state
 >0x43A      leshort         3               {invalid}invalid state
 >0x43A      leshort         <0              {invalid}invalid state
@@ -561,10 +563,10 @@
 >>0     string          !Rom\x2E        {invalid} unknown endianness
 >0      string          \x2EmoR         little endian,
 >>8     lelong          x               size: <= %d
->>8     lelong-0x20     x               {jump:%d}
+#>>8     lelong-0x20     x               {jump:%d}
 >0      string          Rom\x2E         big endian,
 >>8     belong          x               size: <= %d
->>8     belong-0x20     x               {jump:%d}
+#>>8     belong-0x20     x               {jump:%d}
 
 # Wind River MemFS file system, found in some VxWorks devices
 0       string    owowowowowowowowowowowowowowow    Wind River management filesystem,{overlap}
